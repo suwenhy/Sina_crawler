@@ -5,7 +5,7 @@ import re
 from collections import Counter
 import wordcloud
 
-filename = "2021/2021_phase2"  # 评论文件名，应放在resource目录下
+filename = "2022/微博评论2022年4月"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
 breakdir = f"output/{filename}_break.csv" #分词文件保存路径
 wordclouddir =f"output/{filename}_could.png" #词云图片保存路径
@@ -91,9 +91,9 @@ def creatWordCloud(words):
     w.to_file(wordclouddir)
 
 if __name__ == '__main__':
-    #jieba_break()  #进行分词操作
-    #print("分词成功！！！，下面进行词频统计")
+    jieba_break()  #进行分词操作
+    print("分词成功！！！，下面进行词频统计")
     allwords=getallwords()
     topcomment = couter(allwords)   #统计出高频词汇
-    creatWordCloud(topcomment)#将高频词绘制成词云
-    analysis(allwords)
+    #creatWordCloud(topcomment)#将高频词绘制成词云
+    #analysis(allwords)
