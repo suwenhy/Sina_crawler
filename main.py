@@ -8,10 +8,11 @@ import csv
 import random
 
 requests = requests.session()  # 建立一个Session
-year=input("请输入爬取当前年份")
-mouth=input("请输入爬取月份")
-cookitext = "SINAGLOBAL=9485957095805.742.1641285883325; _ga=GA1.2.1005456960.1646040583; UOR=,,www.baidu.com; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhuA1Az6n45pppnmj-1H1-j5JpX5KMhUgL.FoqR1Kq4eK501h52dJLoIEjLxKqL1-qLBoBLxKqL1KqL1KMLxK-LBKMLB.qLxKMLBKeL1K-f1K2c1h27; ALF=1681727484; SSOLoginState=1650191485; SCF=AjG8SWNI0eDf8jHIUXBv9bKNDy5bRS2IvHFqU5IHD_QSGpUf9jeDWiZ6hcuTFvyxqW3zKjM0zE9YKEeuIn47GUI.; SUB=_2A25PX5wuDeRhGeBG4lQY8S7PwzyIHXVsLIrmrDV8PUNbmtAfLRXzkW9NQfQ7NCHFnSV9q9voh2fJFIx752mEODbN; _s_tentry=login.sina.com.cn; Apache=6563696166481.694.1650191488468; ULV=1650191488473:9:5:1:6563696166481.694.1650191488468:1649998750003; webim_unReadCount=%7B%22time%22%3A1650191528028%2C%22dm_pub_total%22%3A0%2C%22chat_group_client%22%3A0%2C%22chat_group_notice%22%3A0%2C%22allcountNum%22%3A20%2C%22msgbox%22%3A0%7D; XSRF-TOKEN=jqfG9TxFCpVxgUq6G9S2eZRi; WBPSESS=njN14ORccGwU3U136zmrS7QGuHHSNP86dm1PwVOTE-HOPYyKTG8LsZlEgEBWbQj8zB3YZGnb2TxPXunlL84bA0HHJgk8nguRolh_DU8G9fx0zxTsWoRuCiUIFXCdSPyjgbEyh-uihn_GbIsbP-WC9g==".replace('\n', '')
-cookitext =input("请输入Cookie")
+year = input("请输入爬取当前年份")
+mouth = input("请输入爬取月份")
+cookitext = "SINAGLOBAL=9485957095805.742.1641285883325; _ga=GA1.2.1005456960.1646040583; UOR=,,www.baidu.com; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhuA1Az6n45pppnmj-1H1-j5JpX5KMhUgL.FoqR1Kq4eK501h52dJLoIEjLxKqL1-qLBoBLxKqL1KqL1KMLxK-LBKMLB.qLxKMLBKeL1K-f1K2c1h27; ALF=1681727484; SSOLoginState=1650191485; SCF=AjG8SWNI0eDf8jHIUXBv9bKNDy5bRS2IvHFqU5IHD_QSGpUf9jeDWiZ6hcuTFvyxqW3zKjM0zE9YKEeuIn47GUI.; SUB=_2A25PX5wuDeRhGeBG4lQY8S7PwzyIHXVsLIrmrDV8PUNbmtAfLRXzkW9NQfQ7NCHFnSV9q9voh2fJFIx752mEODbN; _s_tentry=login.sina.com.cn; Apache=6563696166481.694.1650191488468; ULV=1650191488473:9:5:1:6563696166481.694.1650191488468:1649998750003; webim_unReadCount=%7B%22time%22%3A1650191528028%2C%22dm_pub_total%22%3A0%2C%22chat_group_client%22%3A0%2C%22chat_group_notice%22%3A0%2C%22allcountNum%22%3A20%2C%22msgbox%22%3A0%7D; XSRF-TOKEN=jqfG9TxFCpVxgUq6G9S2eZRi; WBPSESS=njN14ORccGwU3U136zmrS7QGuHHSNP86dm1PwVOTE-HOPYyKTG8LsZlEgEBWbQj8zB3YZGnb2TxPXunlL84bA0HHJgk8nguRolh_DU8G9fx0zxTsWoRuCiUIFXCdSPyjgbEyh-uihn_GbIsbP-WC9g==".replace(
+    '\n', '')
+cookitext = input("请输入Cookie")
 headers = {
     'accept': 'application/json, text/plain, */*',
     'accept-encoding': 'gzip, deflate, br',
@@ -72,7 +73,6 @@ def getWeiboCommentinfo(url):
                 user_from = str(ct.find('p', class_="from").text).replace(' ', '').replace('\n', '')  # 时间和发布终端设备名称
                 weibo_content = str(ct.find('p', class_="txt").text).replace(' ', '').replace('\n', '')  # 微博内容
 
-
                 data = [weibo_content, user_name, user_from, user_index, mid, uid]
 
                 max_id = 0
@@ -120,7 +120,6 @@ def getCommentLevel1(data, max_id):
 
 
 def htmlComment(data):
-
     mid = data[-2]
     uid = data[-1]
     url = 'https://s.weibo.com/Ajax_Comment/small?'
@@ -151,18 +150,18 @@ def htmlComment(data):
 def runx():
     # keytext = input('请输入关键词：')
     keytext = '新冠疫情'
-    for day in range(1,29):
-        for x in range(1, 3): #每天爬取多少页页的话题评论
-            url = f"https://s.weibo.com/weibo?q={keytext}&timescope=custom:{int(year)-1}-12-31-0:{year}-{mouth}-{day}&page={x}"
+    for day in range(1, 29):
+        for x in range(1, 3):  # 每天爬取多少页页的话题评论
+            url = f"https://s.weibo.com/weibo?q={keytext}&timescope=custom:{int(year) - 1}-12-31-0:{year}-{mouth}-{day}&page={x}"
 
-            t = random.randint(2,5)
-            print("当前爬取"+str(year)+"年第"+str(mouth)+"月第"+str(day)+"天第"+str(x)+"页评论数据")
+            t = random.randint(2, 5)
+            print("当前爬取" + str(year) + "年第" + str(mouth) + "月第" + str(day) + "天第" + str(x) + "页评论数据")
             print(f"{t}秒后开始抓取")
             time.sleep(t)
             try:
                 getWeiboCommentinfo(url)
             except Exception as e:
-                print("爬取"+str(year)+"年第"+str(mouth)+"月第"+str(day)+"天第"+str(x)+"页评论数据时发生中断")
+                print("爬取" + str(year) + "年第" + str(mouth) + "月第" + str(day) + "天第" + str(x) + "页评论数据时发生中断")
                 print(e)
 
 

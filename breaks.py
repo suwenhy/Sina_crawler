@@ -7,8 +7,8 @@ import wordcloud
 
 filename = "2022/微博评论2022年4月"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
-breakdir = f"output/{filename}_break.csv" #分词文件保存路径
-wordclouddir =f"output/{filename}_could.png" #词云图片保存路径
+breakdir = f"output/{filename}_break.csv"  # 分词文件保存路径
+wordclouddir = f"output/{filename}_could.png"  # 词云图片保存路径
 print(filedir)
 print(breakdir)
 
@@ -58,7 +58,8 @@ def jieba_break():
             outputs.write(line_seg + '\n')  # 将分词结果保存到文件中
     outputs.close()
 
-def getallwords(): #将分词后的评论读取到内存中，以集合的形式
+
+def getallwords():  # 将分词后的评论读取到内存中，以集合的形式
     cut_words = ""
     for line in open(breakdir, encoding='utf-8'):
         line.strip('\n')
@@ -66,34 +67,41 @@ def getallwords(): #将分词后的评论读取到内存中，以集合的形式
         seg_list = jieba.cut(line, cut_all=False)
         cut_words += (" ".join(seg_list))
     all_words = cut_words.split()
-    return all_words #返回分词集合
+    return all_words  # 返回分词集合
+
+
 def couter(all_words):
     c = Counter()
-    #统计词频
+    # 统计词频
     for x in all_words:
         if len(x) > 1 and x != '\r\n':
             c[x] += 1
 
     print('\n词频统计结果：')
-    topcomment=''
+    topcomment = ''
     for (k, v) in c.most_common(50):  # 输出词频最高的前50个词
         print("%s:%d" % (k, v))
-        topcomment+=k+" "
+        topcomment += k + " "
     print(topcomment)
     return topcomment
-def analysis (allwords):
-    print(allwords) #返回分词集合
+
+
+def analysis(allwords):
+    print(allwords)  # 返回分词集合
+
 
 def creatWordCloud(words):
-    mask = imageio.imread_v2('resource/backgroud.png') #设置蒙版图片，爱心图
-    w = wordcloud.WordCloud(width=2000,height=1400,font_path="msyh.ttc",max_words=50,background_color='white',colormap='cool',mask=mask)
-    w.generate(words) #为词云注入词组
+    mask = imageio.imread_v2('resource/backgroud.png')  # 设置蒙版图片，爱心图
+    w = wordcloud.WordCloud(width=2000, height=1400, font_path="msyh.ttc", max_words=50, background_color='white',
+                            colormap='cool', mask=mask)
+    w.generate(words)  # 为词云注入词组
     w.to_file(wordclouddir)
 
+
 if __name__ == '__main__':
-    jieba_break()  #进行分词操作
+    jieba_break()  # 进行分词操作
     print("分词成功！！！，下面进行词频统计")
-    allwords=getallwords()
-    topcomment = couter(allwords)   #统计出高频词汇
-    #creatWordCloud(topcomment)#将高频词绘制成词云
-    #analysis(allwords)
+    allwords = getallwords()
+    topcomment = couter(allwords)  # 统计出高频词汇
+    # creatWordCloud(topcomment)#将高频词绘制成词云
+    # analysis(allwords)
