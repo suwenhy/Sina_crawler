@@ -5,7 +5,7 @@ import re
 from collections import Counter
 import wordcloud
 
-filename = "2021_phase2"  # 评论文件名，应放在resource目录下
+filename = "2021/2021_phase2"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
 breakdir = f"output/{filename}_break.csv" #分词文件保存路径
 wordclouddir =f"output/{filename}_could.png" #词云图片保存路径
@@ -58,8 +58,7 @@ def jieba_break():
             outputs.write(line_seg + '\n')  # 将分词结果保存到文件中
     outputs.close()
 
-
-def couter():
+def getallwords(): #将分词后的评论读取到内存中，以集合的形式
     cut_words = ""
     for line in open(breakdir, encoding='utf-8'):
         line.strip('\n')
@@ -67,7 +66,8 @@ def couter():
         seg_list = jieba.cut(line, cut_all=False)
         cut_words += (" ".join(seg_list))
     all_words = cut_words.split()
-    # print(all_words) #返回分词集合
+    return all_words #返回分词集合
+def couter(all_words):
     c = Counter()
     #统计词频
     for x in all_words:
@@ -81,6 +81,9 @@ def couter():
         topcomment+=k+" "
     print(topcomment)
     return topcomment
+def analysis (allwords):
+    print(allwords) #返回分词集合
+
 def creatWordCloud(words):
     mask = imageio.imread_v2('resource/backgroud.png') #设置蒙版图片，爱心图
     w = wordcloud.WordCloud(width=2000,height=1400,font_path="msyh.ttc",max_words=50,background_color='white',colormap='cool',mask=mask)
@@ -88,7 +91,9 @@ def creatWordCloud(words):
     w.to_file(wordclouddir)
 
 if __name__ == '__main__':
-    jieba_break()  #进行分词操作
-    print("分词成功！！！，下面进行词频统计")
-    all_words = couter()   #进行词频统计操作
-    creatWordCloud(all_words)
+    #jieba_break()  #进行分词操作
+    #print("分词成功！！！，下面进行词频统计")
+    allwords=getallwords()
+    topcomment = couter(allwords)   #统计出高频词汇
+    creatWordCloud(topcomment)#将高频词绘制成词云
+    analysis(allwords)
