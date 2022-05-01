@@ -86,7 +86,7 @@ def couter(all_words):
             print("")
         print("%s:%d" % (k, v),end=' ')
         topcomment += k + " "
-    print("\n"+topcomment)
+    #print("\n"+topcomment)
     return topcomment
 
 
