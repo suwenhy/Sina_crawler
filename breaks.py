@@ -5,7 +5,7 @@ import re
 from collections import Counter
 import wordcloud
 
-filename = "2022/微博评论2022年4月"  # 评论文件名，应放在resource目录下
+filename = "2020/2020_phase1"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
 breakdir = f"output/{filename}_break.csv"  # 分词文件保存路径
 wordclouddir = f"output/{filename}_could.png"  # 词云图片保存路径
@@ -79,10 +79,14 @@ def couter(all_words):
 
     print('\n词频统计结果：')
     topcomment = ''
+    num=0;
     for (k, v) in c.most_common(50):  # 输出词频最高的前50个词
-        print("%s:%d" % (k, v))
+        num=num+1
+        if(num%7==0):
+            print("")
+        print("%s:%d" % (k, v),end=' ')
         topcomment += k + " "
-    print(topcomment)
+    print("\n"+topcomment)
     return topcomment
 
 
@@ -92,16 +96,16 @@ def analysis(allwords):
 
 def creatWordCloud(words):
     mask = imageio.imread_v2('resource/backgroud.png')  # 设置蒙版图片，爱心图
-    w = wordcloud.WordCloud(width=2000, height=1400, font_path="msyh.ttc", max_words=50, background_color='white',
+    w = wordcloud.WordCloud(max_font_size=120,width=2000, height=1400, font_path="msyh.ttc", max_words=50, background_color='white',
                             colormap='cool', mask=mask)
     w.generate(words)  # 为词云注入词组
     w.to_file(wordclouddir)
 
 
 if __name__ == '__main__':
-    jieba_break()  # 进行分词操作
+    #jieba_break()  # 进行分词操作
     print("分词成功！！！，下面进行词频统计")
     allwords = getallwords()
     topcomment = couter(allwords)  # 统计出高频词汇
-    # creatWordCloud(topcomment)#将高频词绘制成词云
+    creatWordCloud(topcomment)#将高频词绘制成词云
     # analysis(allwords)
