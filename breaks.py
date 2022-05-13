@@ -4,6 +4,7 @@ import csv
 import re
 from collections import Counter
 import wordcloud
+from snownlp import SnowNLP
 
 filename = "2020/2020_phase1"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
@@ -96,16 +97,17 @@ def analysis(allwords):
 
 def creatWordCloud(words):
     mask = imageio.imread_v2('resource/backgroud.png')  # 设置蒙版图片，爱心图
-    w = wordcloud.WordCloud(max_font_size=120,width=2000, height=1400, font_path="msyh.ttc", max_words=50, background_color='white',
-                            colormap='cool', mask=mask)
+    w = wordcloud.WordCloud(max_font_size=120,width=2000, height=1400, font_path="msyh.ttc", max_words=50,
+                            background_color='white',colormap='cool', mask=mask)
     w.generate(words)  # 为词云注入词组
     w.to_file(wordclouddir)
 
 
 if __name__ == '__main__':
-    #jieba_break()  # 进行分词操作
+    # #jieba_break()  # 进行分词操作
     print("分词成功！！！，下面进行词频统计")
-    allwords = getallwords()
-    topcomment = couter(allwords)  # 统计出高频词汇
-    creatWordCloud(topcomment)#将高频词绘制成词云
-    # analysis(allwords)
+    # allwords = getallwords()
+    # topcomment = couter(allwords)  # 统计出高频词汇
+    # creatWordCloud(topcomment)#将高频词绘制成词云
+    # # analysis(allwords)
+
