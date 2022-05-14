@@ -6,12 +6,10 @@ from collections import Counter
 import wordcloud
 from snownlp import SnowNLP
 
-filename = "2020/2020_phase1"  # 评论文件名，应放在resource目录下
+filename = "2021/微博评论2021年12月"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
 breakdir = f"output/{filename}_break.csv"  # 分词文件保存路径
 wordclouddir = f"output/{filename}_could.png"  # 词云图片保存路径
-print(filedir)
-print(breakdir)
 
 
 # 创建停用词列表
@@ -92,7 +90,15 @@ def couter(all_words):
 
 
 def analysis(allwords):
-    print(allwords)  # 返回分词集合
+    cout=0
+    num=0
+    for word in allwords:
+        s1 = SnowNLP(word)
+        num=num+1
+        cout+=s1.sentiments
+    avg=cout/num
+    print(avg)
+    return avg
 
 
 def creatWordCloud(words):
@@ -105,9 +111,9 @@ def creatWordCloud(words):
 
 if __name__ == '__main__':
     # #jieba_break()  # 进行分词操作
-    print("分词成功！！！，下面进行词频统计")
-    # allwords = getallwords()
+    #print("分词成功！！！，下面进行词频统计")
+    allwords = getallwords()
     # topcomment = couter(allwords)  # 统计出高频词汇
     # creatWordCloud(topcomment)#将高频词绘制成词云
-    # # analysis(allwords)
+    analysis(allwords)#对分词结果进行情感分析打分
 
