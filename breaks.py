@@ -5,8 +5,9 @@ import re
 from collections import Counter
 import wordcloud
 from snownlp import SnowNLP
+from snownlp import sentiment
 
-filename = "2021/微博评论2021年12月"  # 评论文件名，应放在resource目录下
+filename = "2020/2020_phase1"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
 breakdir = f"output/{filename}_break.csv"  # 分词文件保存路径
 wordclouddir = f"output/{filename}_could.png"  # 词云图片保存路径
@@ -78,42 +79,46 @@ def couter(all_words):
 
     print('\n词频统计结果：')
     topcomment = ''
-    num=0;
-    for (k, v) in c.most_common(50):  # 输出词频最高的前50个词
-        num=num+1
-        if(num%7==0):
+    num = 0;
+    for (k, v) in c.most_common(100):  # 输出词频最高的前50个词
+        num = num + 1
+        if (num % 7 == 0):
             print("")
-        print("%s:%d" % (k, v),end=' ')
+        print("%s:%d" % (k, v), end=' ')
         topcomment += k + " "
-    #print("\n"+topcomment)
+    # print("\n"+topcomment)
     return topcomment
 
 
 def analysis(allwords):
-    cout=0
-    num=0
+    cout = 0
+    num = 0
     for word in allwords:
         s1 = SnowNLP(word)
-        num=num+1
-        cout+=s1.sentiments
-    avg=cout/num
+        num = num + 1
+        cout += s1.sentiments
+    avg = cout / num
     print(avg)
     return avg
 
 
 def creatWordCloud(words):
     mask = imageio.imread_v2('resource/backgroud.png')  # 设置蒙版图片，爱心图
-    w = wordcloud.WordCloud(max_font_size=120,width=2000, height=1400, font_path="msyh.ttc", max_words=50,
-                            background_color='white',colormap='cool', mask=mask)
+    w = wordcloud.WordCloud(max_font_size=100, width=2000,font_path = "resource/ziti.ttf", height=1400, max_words=100,
+                            background_color='white', colormap='cool', mask=mask)
     w.generate(words)  # 为词云注入词组
     w.to_file(wordclouddir)
 
+#使用自有语料训练情感分析模型
+def trainNewMoudle():
+    sentiment.train("resource/train/neg2.txt", "resource/train/pos2.txt")
+    sentiment.save('weibo.marshal')
+
 
 if __name__ == '__main__':
-    # #jieba_break()  # 进行分词操作
-    #print("分词成功！！！，下面进行词频统计")
+    #jieba_break()  # 进行分词操作
+    print("分词成功！！！，下面进行词频统计")
     allwords = getallwords()
-    # topcomment = couter(allwords)  # 统计出高频词汇
-    # creatWordCloud(topcomment)#将高频词绘制成词云
-    analysis(allwords)#对分词结果进行情感分析打分
-
+    topcomment = couter(allwords)  # 统计出高频词汇
+    #creatWordCloud(topcomment)#将高频词绘制成词云
+    # analysis(allwords)  # 对分词结果进行情感分析打分
