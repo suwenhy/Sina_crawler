@@ -112,7 +112,7 @@ def creatWordCloud(words):
 #使用自有语料训练情感分析模型
 def trainNewMoudle():
     sentiment.train("resource/train/neg2.txt", "resource/train/pos2.txt")
-    sentiment.save('weibo.marshal')
+    sentiment.save('output/weibo.marshal')
 
 
 if __name__ == '__main__':
