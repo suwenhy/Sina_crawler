@@ -7,7 +7,7 @@ import wordcloud
 from snownlp import SnowNLP
 from snownlp import sentiment
 
-filename = "2020/2020_phase1"  # 评论文件名，应放在resource目录下
+filename = "2022/2022_phase3"  # 评论文件名，应放在resource目录下
 filedir = f"resource/{filename}.csv"  # 原文档路径
 breakdir = f"output/{filename}_break.csv"  # 分词文件保存路径
 wordclouddir = f"output/{filename}_could.png"  # 词云图片保存路径
@@ -27,7 +27,7 @@ def processing(text):
     text = re.sub("【.+?】", "", text)  # 去除 【xx】 (里面的内容通常都不是用户自己写的)
     text = re.sub(".*?:", "", text)  # 去除微博用户的名字
     text = re.sub("#.*#", "", text)  # 去除话题引用
-    text = re.sub("\n", "", text)
+    text = re.sub("\n", "", text)#去掉换行符
     return text
 
 
@@ -108,6 +108,7 @@ def creatWordCloud(words):
                             background_color='white', colormap='cool', mask=mask)
     w.generate(words)  # 为词云注入词组
     w.to_file(wordclouddir)
+    print("词云绘制完成")
 
 #使用自有语料训练情感分析模型
 def trainNewMoudle():
@@ -120,5 +121,6 @@ if __name__ == '__main__':
     print("分词成功！！！，下面进行词频统计")
     allwords = getallwords()
     topcomment = couter(allwords)  # 统计出高频词汇
-    #creatWordCloud(topcomment)#将高频词绘制成词云
-    # analysis(allwords)  # 对分词结果进行情感分析打分
+    creatWordCloud(topcomment)#将高频词绘制成词云
+    #trainNewMoudle() #使用自带的新语料训练模型
+    analysis(allwords)  # 对分词结果进行情感分析打分

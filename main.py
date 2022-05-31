@@ -55,7 +55,6 @@ def getWeiboCommentinfo(url):
         'upgrade-insecure-requests': '1',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
     }
-
     response = requests.get(url, headers=headers)
     html = BeautifulSoup(response.content, 'lxml')
     conetnt = html.find_all('div', class_="card-wrap")  # 这里CALSS 要加下划线
@@ -150,10 +149,11 @@ def htmlComment(data):
 def runx():
     # keytext = input('请输入关键词：')
     keytext = '新冠疫情'
-    for day in range(1, 29):
+    day=[1,31,28,31,30,31,30,31,31,30,31,30,31]
+    for day in range(1, day[int(mouth)]):
         for x in range(1, 3):  # 每天爬取多少页页的话题评论
-            url = f"https://s.weibo.com/weibo?q={keytext}&timescope=custom:{int(year) - 1}-12-31-0:{year}-{mouth}-{day}&page={x}"
-
+            url = f"https://s.weibo.com/weibo?q={keytext}&xsort=hot&timescope=custom:{int(year) - 1}" \
+                  f"-12-31-0:{year}-{mouth}-{day}&page={x}"
             t = random.randint(2, 5)
             print("当前爬取" + str(year) + "年第" + str(mouth) + "月第" + str(day) + "天第" + str(x) + "页评论数据")
             print(f"{t}秒后开始抓取")
